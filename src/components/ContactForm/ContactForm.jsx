@@ -3,8 +3,9 @@ import clsx from "clsx";
 import css from "./ContactForm.module.css";
 import { useId } from "react";
 import * as Yup from "yup";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addContact } from "../../redux/contactsOps";
+import { selectLoading } from "../../redux/contactsSlice";
 
 const ContactForm = ({ initialValues = { name: "", phone: "" } }) => {
   const nameFieldId = useId();
@@ -23,6 +24,7 @@ const ContactForm = ({ initialValues = { name: "", phone: "" } }) => {
   });
 
   const dispatch = useDispatch();
+  const loading = useSelector(selectLoading);
 
   const handleSubmit = (values, actions) => {
     dispatch(
@@ -63,7 +65,9 @@ const ContactForm = ({ initialValues = { name: "", phone: "" } }) => {
           id={numberFieldId}
           className={clsx(css.error)}
         />
-        <button type="submit">Add contact</button>
+        <button type="submit" disabled={loading}>
+          Add contact
+        </button>
       </Form>
     </Formik>
   );
